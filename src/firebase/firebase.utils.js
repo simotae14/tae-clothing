@@ -12,6 +12,37 @@ const config = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID
 };
 
+// function to create a new user profile authenticated in the collection
+export const createUserProfileDocument = async (userAuth, additionalData) => {
+  // if signout exit
+  if (!userAuth) return;
+
+  // get user reference
+  const userRef = firestore.doc(`users/${userAuth.uid}`);
+  // retrieve the snapshot
+  const snapShot = await userRef.get();
+
+  console.log(snapShot);
+  // if snapshot is not already saved on DB
+  if (!snapShot.exists) {
+    const { displayName, email } = userAuth;
+    // date creation on DB
+    const createdAt = new Date();
+
+    try {
+      await userRef.set({
+        displayName,
+        email,
+        createdAt,
+        ...additionalData
+      });
+    } catch (error) {
+      console.log('error creating user', error.message);
+    }
+  }
+  return userRef;
+}
+
 firebase.initializeApp(config);
 
 export const auth = firebase.auth();
