@@ -1,5 +1,7 @@
 import firebase from 'firebase/app';
+// db
 import 'firebase/firestore';
+// auth
 import 'firebase/auth';
 
 const config = {
@@ -17,19 +19,20 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   // if signout exit
   if (!userAuth) return;
 
-  // get user reference
+  // get user reference, check if the user already exists in DB
   const userRef = firestore.doc(`users/${userAuth.uid}`);
-  // retrieve the snapshot
+  // retrieve the snapshot in that reference
   const snapShot = await userRef.get();
 
-  console.log(snapShot);
   // if snapshot is not already saved on DB
   if (!snapShot.exists) {
+    // pties that we want to store
     const { displayName, email } = userAuth;
     // date creation on DB
     const createdAt = new Date();
 
     try {
+      // save the reference in the DB
       await userRef.set({
         displayName,
         email,

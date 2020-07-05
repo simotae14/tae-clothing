@@ -22,11 +22,11 @@ class App extends React.Component {
 
   componentDidMount() {
     // get the function to call to unsuscribe
-    this.unsuscribeFromAuth = auth.onAuthStateChanged(async user => {
+    this.unsuscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       this.setState({
-        currentUser: user
+        currentUser: userAuth
       })
-      createUserProfileDocument(user);
+      createUserProfileDocument(userAuth);
     });
   }
 
