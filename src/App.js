@@ -34,7 +34,7 @@ class App extends React.Component {
               id: snapShot.id,
               ...snapShot.data()
             }
-          }, () => console.log(this.state));
+          });
         });
       } else {
         // if the user is not logged with update the current user
