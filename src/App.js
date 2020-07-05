@@ -23,10 +23,26 @@ class App extends React.Component {
   componentDidMount() {
     // get the function to call to unsuscribe
     this.unsuscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-      this.setState({
-        currentUser: userAuth
-      })
-      createUserProfileDocument(userAuth);
+      if (userAuth) {
+        // retrieve the userRef of the authorized user
+        const userRef = await createUserProfileDocument(userAuth);
+
+        // use the method onSnapshot to retrieve the data
+        userRef.onSnapshot(snapShot => {
+          this.setState({
+            currentUser: {
+              id: snapShot.id,
+              ...snapShot.data()
+            }
+          });
+        });
+      } else {
+        // if the user is not logged with update the current user
+        // with null
+        this.setState({
+          currentUser: userAuth
+        });
+      }
     });
   }
 
