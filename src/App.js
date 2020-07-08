@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import './App.css';
 import Header from './components/header/header.component';
@@ -7,20 +8,16 @@ import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 
+import { setCurrentUser } from './redux/user/user.action';
+
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
 class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      currentUser: null
-    }
-  }
-
   // function to unsuscribe the user
   unsuscribeFromAuth = null;
 
   componentDidMount() {
+    const { setCurrentUser } = this.props;
     // get the function to call to unsuscribe
     this.unsuscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
@@ -29,19 +26,15 @@ class App extends React.Component {
 
         // use the method onSnapshot to retrieve the data
         userRef.onSnapshot(snapShot => {
-          this.setState({
-            currentUser: {
-              id: snapShot.id,
-              ...snapShot.data()
-            }
+          setCurrentUser({
+            id: snapShot.id,
+            ...snapShot.data()            
           });
         });
       } else {
         // if the user is not logged with update the current user
         // with null
-        this.setState({
-          currentUser: userAuth
-        });
+        setCurrentUser(userAuth);
       }
     });
   }
@@ -72,7 +65,10 @@ class App extends React.Component {
       </div>
     );
   }
-
 }
 
-export default App;
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: user => dispatch(setCurrentUser(user))
+});
+
+export default connect(null, mapDispatchToProps)(App);
