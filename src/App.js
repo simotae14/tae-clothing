@@ -17,7 +17,7 @@ class App extends React.Component {
   unsuscribeFromAuth = null;
 
   componentDidMount() {
-    const { setCurrentUser, currentUser } = this.props;
+    const { setCurrentUser } = this.props;
     // get the function to call to unsuscribe
     this.unsuscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
