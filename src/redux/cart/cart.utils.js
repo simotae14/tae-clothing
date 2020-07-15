@@ -7,5 +7,6 @@ export const addItemToCart = (cartItems, cartItemToAdd) => {
       : cartItem
     );
   }
+  // if not found create a new object with quantity 1
   return [...cartItems, { ...cartItemToAdd, quantity: 1 }];
 }
