@@ -5,7 +5,10 @@ import CustomButton from './../custom-button/custom-button.component';
 
 import { auth, createUserProfileDocument } from '../../firebase/firebase.utils';
 
-import './sign-up.styles.scss';
+import {
+  SignUpContainer,
+  TitleSignUp
+} from './sign-up.styles';
 
 class SignUp extends Component {
   constructor() {
@@ -69,10 +72,10 @@ class SignUp extends Component {
       confirmPassword
     } =  this.state;
     return (
-      <div className='sign-up'>
-        <h2 className='title'>
+      <SignUpContainer>
+        <TitleSignUp>
           I do not have an account
-        </h2>
+        </TitleSignUp>
         <span>
           Sign up with your email and password
         </span>
@@ -111,7 +114,7 @@ class SignUp extends Component {
           />
           <CustomButton type='submit'>SIGN UP</CustomButton>
         </form>
-      </div>
+      </SignUpContainer>
     );
   }
 }
