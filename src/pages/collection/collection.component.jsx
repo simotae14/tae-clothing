@@ -6,7 +6,11 @@ import { selectCollection } from '../../redux/shop/shop.selectors';
 
 import CollectionItem from '../../components/collection-item/collection-item.component';
 
-import './collection.component.scss';
+import {
+  CollectionPageContainer,
+  ItemsContainer,
+  TitleContainer
+} from './collection.styles';
 
 const CollectionPage = ({ collection }) => {
   const {
@@ -14,16 +18,16 @@ const CollectionPage = ({ collection }) => {
     items
   } = collection;
   return (
-    <div className='collection-page'>
-      <h2 className="title">{title}</h2>
-      <div className="items">
+    <CollectionPageContainer>
+      <TitleContainer>{title}</TitleContainer>
+      <ItemsContainer>
         {
           items.map(item => (
             <CollectionItem key={item.id} item={item} />
           ))
         }
-      </div>
-    </div>
+      </ItemsContainer>
+    </CollectionPageContainer>
   );
 };
 
