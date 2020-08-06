@@ -15,15 +15,16 @@ import { createStructuredSelector } from 'reselect';
 
 import { setCurrentUser } from './redux/user/user.action';
 import { selectCurrentUser } from './redux/user/user.selectors';
+import { selectCollectionForPreview } from './redux/shop/shop.selectors';
 
-import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument, addCollectionAndDocuments } from './firebase/firebase.utils';
 
 class App extends React.Component {
   // function to unsuscribe the user
   unsuscribeFromAuth = null;
 
   componentDidMount() {
-    const { setCurrentUser } = this.props;
+    const { setCurrentUser, collectionsArray } = this.props;
     // get the function to call to unsuscribe
     this.unsuscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
@@ -41,6 +42,7 @@ class App extends React.Component {
         // if the user is not logged with update the current user
         // with null
         setCurrentUser(userAuth);
+        addCollectionAndDocuments('collections', collectionsArray.map(({ title, items }) => ({ title, items })));
       }
     });
   }
@@ -80,7 +82,8 @@ class App extends React.Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
+  collectionsArray: selectCollectionForPreview
 });
 
 const mapDispatchToProps = dispatch => ({
