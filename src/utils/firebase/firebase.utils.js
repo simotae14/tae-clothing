@@ -17,6 +17,8 @@ import {
   setDoc,
   collection,
   writeBatch,
+  query,
+  getDocs,
 } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -44,7 +46,11 @@ export const signInWithGoogleRedirect = () => signInWithRedirect(auth, provider)
 // instantiate DB
 export const db = getFirestore();
 
-export const addCollectionAddDocuments = async (collectionKey, objectsToAdd) => {
+export const addCollectionAddDocuments = async (
+    collectionKey,
+    objectsToAdd,
+    field = 'title',
+  ) => {
   const collectionRef = collection(db, collectionKey);
   const batch = writeBatch(db);
 
@@ -56,6 +62,24 @@ export const addCollectionAddDocuments = async (collectionKey, objectsToAdd) => 
 
   await batch.commit();
   console.log('done');
+};
+
+export const getCategoriesAndDocuments = async () => {
+  const collectionRef = collection(db, 'categories');
+  const q = query(collectionRef);
+
+  const querySnaspshot = await getDocs(q);
+  // retrieve the object with all the categories
+  const categoryMap = querySnaspshot.docs.reduce((acc, docSnapshot) => {
+    const {
+      title,
+      items,
+    } = docSnapshot.data();
+    acc[title.toLowerCase()] = items;
+    return acc;
+  }, {});
+
+  return categoryMap;
 }
 
 export const createUserDocumentFromAuth = async (userAuth, additionalInformation = {}) => {
