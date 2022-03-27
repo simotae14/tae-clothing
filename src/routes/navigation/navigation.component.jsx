@@ -15,15 +15,8 @@ import './navigation.styles.scss';
 const Navigation = () => {
   const {
     currentUser,
-    setCurrentUser,
   } = useContext(UserContext);
 
-  // create an handler to signOut and update the Context
-  const signOutHandler = async () => {
-    await signOutUser();
-    // set the context to null
-    setCurrentUser(null);
-  }
   return (
     <>
       <div className='navigation'>
@@ -37,7 +30,7 @@ const Navigation = () => {
           {
             currentUser ? (
               <span
-                onClick={signOutHandler}
+                onClick={signOutUser}
                 className='nav-link'
               >
                 SIGN OUT
