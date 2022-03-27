@@ -8,6 +8,9 @@ import { ReactComponent as CrownLogo } from '../../assets/crown.svg';
 import {
   UserContext,
 } from '../../contexts/user.context';
+import {
+  CartContext,
+} from '../../contexts/cart.context';
 
 import {
   signOutUser,
@@ -19,6 +22,10 @@ const Navigation = () => {
   const {
     currentUser,
   } = useContext(UserContext);
+
+  const {
+    isCartOpen,
+  } = useContext(CartContext);
 
   return (
     <>
@@ -46,7 +53,9 @@ const Navigation = () => {
           }
           <CartIcon />
         </div>
-        <CartDropdown />
+        {
+          isCartOpen && <CartDropdown />
+        }
       </div>
       <Outlet />
     </>
