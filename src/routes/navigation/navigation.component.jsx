@@ -1,6 +1,8 @@
 import { useContext } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 
+import CartIcon from '../../components/cart-icon/cart-icon.component';
+
 import { ReactComponent as CrownLogo } from '../../assets/crown.svg';
 import {
   UserContext,
@@ -41,6 +43,7 @@ const Navigation = () => {
               </Link>
             )
           }
+          <CartIcon />
         </div>
       </div>
       <Outlet />
