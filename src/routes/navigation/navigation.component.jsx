@@ -12,7 +12,7 @@ const Navigation = () => {
   const {
     currentUser,
   } = useContext(UserContext);
-  console.log(currentUser);
+  // console.log(currentUser);
   return (
     <>
       <div className='navigation'>
