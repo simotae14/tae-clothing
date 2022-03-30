@@ -6,7 +6,7 @@ import {
 
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-// import logger from 'redux-logger';
+import logger from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 
 import { rootSaga } from './root-saga';
@@ -14,9 +14,9 @@ import { rootSaga } from './root-saga';
 import { rootReducer } from './root-reducer';
 
 // custom middleware logger
-import {
-  loggerMiddleware,
-} from './middleware/logger';
+// import {
+//   loggerMiddleware,
+// } from './middleware/logger';
 
 const persistConfig = {
   key: 'root',
@@ -30,7 +30,7 @@ const sagaMiddleware = createSagaMiddleware();
 const persistentReducer = persistReducer(persistConfig, rootReducer);
 
 const middleWares = [
-  process.env.NODE_ENV !== 'production' && loggerMiddleware,
+  process.env.NODE_ENV !== 'production' && logger,
   sagaMiddleware,
 ].filter(Boolean);
 
