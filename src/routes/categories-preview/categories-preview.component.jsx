@@ -8,9 +8,7 @@ import Spinner from '../../components/spinner/spinner.component';
 const CategoriesPreview = () => {
   const { loading, error, data } = useQuery(GET_COLLECTIONS);
   if (error) console.log(`There is an error: ${error}`);
-  data.collections.map(item => {
-    console.log(item);
-  });
+
   return (
     <>
       {

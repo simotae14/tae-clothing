@@ -1,12 +1,9 @@
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import {
+  gql,
+  useQuery,
+} from "@apollo/client";
 
 import Spinner from '../../components/spinner/spinner.component';
-
-import {
-  selectCategoriesMap,
-  selectCategoriesIsLoading,
-} from '../../store/categories/category.selector';
 
 import {
   useParams,
@@ -19,26 +16,24 @@ import {
 } from './category.styles';
 
 const Category = () => {
-  const isLoading = useSelector(selectCategoriesIsLoading);
   const {
     category,
   } = useParams();
-  const categoriesMap = useSelector(selectCategoriesMap);
-  const [products, setProducts] = useState(categoriesMap[category]);
-  useEffect(() => {
-    setProducts(categoriesMap[category]);
-  }, [category, categoriesMap]);
+  const { loading, error, data } = useQuery(GET_COLLECTION_BY_TITLE, {
+    variables: { title: category },
+  });
+  if (error) console.log(`There is an error: ${error}`);
   return (
     <>
       <CategoryTitle>{category.toUpperCase()}</CategoryTitle>
       {
-        isLoading ? (
+        loading ? (
           <Spinner />
         ) : (
           <CategoryContainer>
-            {
-              products && products.map((product) => <ProductCard key={product.id} product={product} />)
-            }
+              {
+                data?.getCollectionsByTitle?.items && data?.getCollectionsByTitle?.items.map((product) => <ProductCard key={product.id} product={product} />)
+              }
           </CategoryContainer>
         )
       }
@@ -47,3 +42,18 @@ const Category = () => {
 };
 
 export default Category;
+
+const GET_COLLECTION_BY_TITLE = gql`
+  query getCollectionsByTitle($title: String!) {
+    getCollectionsByTitle(title: $title) {
+      id
+      title
+      items {
+        id
+        name
+        price
+        imageUrl
+      }
+    }
+  }
+`
