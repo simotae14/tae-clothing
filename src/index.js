@@ -11,8 +11,6 @@ import { stripePromise } from './utils/stripe/stripe.utils';
 
 import reportWebVitals from './reportWebVitals';
 
-import './index.scss';
-
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
