@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
   CartItemContainer,
   CartImage,
@@ -25,4 +27,4 @@ const CartItem = ({
   );
 };
 
-export default CartItem;
+export default React.memo(CartItem);
