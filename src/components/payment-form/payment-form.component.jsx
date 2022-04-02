@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   selectCartTotal,
@@ -8,6 +8,10 @@ import {
 import {
   selectCurrentUser,
 } from '../../store/user/user.selector';
+
+import {
+  clearAllItems,
+} from '../../store/cart/cart.action';
 
 
 import { BUTTON_TYPE_CLASSES } from '../button/button.component';
@@ -19,6 +23,7 @@ import {
 } from './payment-form.styles';
 
 const PaymentForm = () => {
+  const dispatch = useDispatch();
   const stripe = useStripe();
   const elements = useElements();
   // amount cart
@@ -50,7 +55,6 @@ const PaymentForm = () => {
         client_secret,
       }
     } = response;
-    console.log(client_secret);
     const paymentResult = await stripe.confirmCardPayment(client_secret, {
       payment_method: {
         card: elements.getElement(CardElement),
@@ -62,6 +66,7 @@ const PaymentForm = () => {
     setIsProcessingPayment(false);
     // check payment
     if (paymentResult.error) {
+      dispatch(clearAllItems());
       alert(paymentResult.error);
     } else {
       if (paymentResult.paymentIntent.status === 'succeeded') {
