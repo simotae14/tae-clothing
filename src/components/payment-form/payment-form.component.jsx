@@ -66,10 +66,10 @@ const PaymentForm = () => {
     setIsProcessingPayment(false);
     // check payment
     if (paymentResult.error) {
-      dispatch(clearAllItems());
       alert(paymentResult.error);
     } else {
       if (paymentResult.paymentIntent.status === 'succeeded') {
+        dispatch(clearAllItems());
         alert('Payment Successful');
       }
     }
